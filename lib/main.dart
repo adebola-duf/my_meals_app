@@ -12,9 +12,19 @@ final kTheme = ThemeData(
 );
 void main() {
   runApp(
-     MaterialApp(
+    const MyMealsApp(),
+  );
+}
+
+class MyMealsApp extends StatelessWidget {
+  const MyMealsApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: kTheme,
       home: const TabScreen(),
-    ),
-  );
+    );
+  }
 }

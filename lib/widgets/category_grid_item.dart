@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:my_meals_app/data/dummy_data.dart';
 import 'package:my_meals_app/models/category.dart';
+import 'package:my_meals_app/models/meal.dart';
 import 'package:my_meals_app/screens/meals_screen.dart';
 
 class CategoryGridItem extends StatelessWidget {
   const CategoryGridItem({
     super.key,
     required this.category,
+    required this.addOrRemoveAMealToFavourites,
+    required this.favouriteMeals,
   });
 
   final Category category;
+  final void Function(Meal meal) addOrRemoveAMealToFavourites;
+  final List<Meal> favouriteMeals;
 
   void onCategorySelected(context) {
     Navigator.of(context).push(
@@ -21,6 +26,8 @@ class CategoryGridItem extends StatelessWidget {
               )
               .toList(),
           categoryTitle: category.title,
+          addOrRemoveAMealToFavourites: addOrRemoveAMealToFavourites,
+          favouriteMeals: favouriteMeals,
         ),
       ),
     );
