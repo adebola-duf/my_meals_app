@@ -10,6 +10,7 @@ final kTheme = ThemeData(
   ),
   textTheme: GoogleFonts.latoTextTheme(),
 );
+
 void main() {
   runApp(
     const MyMealsApp(),

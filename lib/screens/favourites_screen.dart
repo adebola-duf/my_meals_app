@@ -23,10 +23,27 @@ class FavouritesScreen extends StatelessWidget {
               favouriteMeals: favouriteMeals,
             ),
           )
-        : const Center(
-            child: Text(
-            "Uh Oh Nothing Here",
-            style: TextStyle(color: Colors.white),
-          ));
+        : Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Uh Oh ... nothing here",
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  "Try selecting a different Category!",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                )
+              ],
+            ),
+          );
   }
 }

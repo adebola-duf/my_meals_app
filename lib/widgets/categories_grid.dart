@@ -8,25 +8,34 @@ class CategoriesGrid extends StatelessWidget {
     super.key,
     required this.addOrRemoveAMealToFavourites,
     required this.favouriteMeals,
+    required this.filteredMeals,
   });
 
   final void Function(Meal meal) addOrRemoveAMealToFavourites;
   final List<Meal> favouriteMeals;
+  final List<Meal> filteredMeals;
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+    return Padding(
+      padding: const EdgeInsets.only(left: 24.0, right: 24, top: 10.0),
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 3 / 2, //3:2
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+        ),
+        children: [
+          for (final category in availableCategories)
+            CategoryGridItem(
+              category: category,
+              addOrRemoveAMealToFavourites: addOrRemoveAMealToFavourites,
+              favouriteMeals: favouriteMeals,
+              filteredMeals: filteredMeals,
+            )
+        ],
       ),
-      children: [
-        for (final category in availableCategories)
-          CategoryGridItem(
-            category: category,
-            addOrRemoveAMealToFavourites: addOrRemoveAMealToFavourites,
-            favouriteMeals: favouriteMeals,
-          )
-      ],
     );
   }
 }
