@@ -33,11 +33,24 @@ class _EachMealScreenState extends ConsumerState<EachMealScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 13.0),
-            child: IconButton(
-              icon: mealFavouriteStatus
-                  ? const Icon(Icons.star)
-                  : const Icon(Icons.star_border_outlined),
-              onPressed: _changeMealFavouriteStatus,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (Widget child, Animation<double> animation) =>
+                  RotationTransition(
+                turns: Tween<double>(begin: 0.9, end: 1).animate(animation),
+                child: child,
+              ),
+              child: IconButton(
+                icon: mealFavouriteStatus
+                    ? const Icon(
+                        Icons.star,
+                      )
+                    : const Icon(
+                        Icons.star_border_outlined,
+                      ),
+                onPressed: _changeMealFavouriteStatus,
+                key: ValueKey(mealFavouriteStatus),
+              ),
             ),
           ),
         ],
