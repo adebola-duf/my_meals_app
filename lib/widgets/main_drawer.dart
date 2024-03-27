@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:my_meals_app/providers/filters_provider.dart';
 import 'package:my_meals_app/screens/set_filters_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({
     super.key,
-    required this.changeUserFilters,
-    required this.userFilters,
   });
-  final void Function(Map<Filter, bool> filter) changeUserFilters;
-  final Map<Filter, bool> userFilters;
 
-  void _changeScreen(context) async {
-    var filterObject = await Navigator.of(context).push<Map<Filter, bool>>(
+  void _changeScreen(context) {
+    Navigator.of(context).push<Map<Filter, bool>>(
       MaterialPageRoute(
-        builder: (ctx) => SetFiltersScreen(
-          userFilters: userFilters,
-        ),
+        builder: (ctx) => const SetFiltersScreen(),
       ),
     );
-    changeUserFilters(filterObject ?? kDefaultFilters);
   }
 
   @override

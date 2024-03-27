@@ -7,28 +7,16 @@ class MealsScreen extends StatelessWidget {
   const MealsScreen({
     super.key,
     required this.meals,
-    required this.categoryTitle,
-    required this.addOrRemoveAMealToFavourites,
-    required this.favouriteMeals,
+    this.categoryTitle,
   });
 
   final List<Meal> meals;
-  final String categoryTitle;
-  final void Function(Meal meal) addOrRemoveAMealToFavourites;
-  final List<Meal> favouriteMeals;
+  final String? categoryTitle;
 
   @override
   Widget build(BuildContext context) {
-    return meals.isNotEmpty
-        ? ListView.builder(
-            itemCount: meals.length,
-            itemBuilder: (ctx, index) => MealItem(
-              meal: meals[index],
-              addOrRemoveAMealToFavourites: addOrRemoveAMealToFavourites,
-              favouriteMeals: favouriteMeals,
-            ),
-          )
-        : Center(
+    Widget screenContent = meals.isEmpty
+        ? Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -49,6 +37,20 @@ class MealsScreen extends StatelessWidget {
                 )
               ],
             ),
+          )
+        : ListView.builder(
+            itemCount: meals.length,
+            itemBuilder: (ctx, index) => MealItem(
+              meal: meals[index],
+            ),
           );
+    return categoryTitle != null
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text(categoryTitle!),
+            ),
+            body: screenContent,
+          )
+        : screenContent;
   }
 }

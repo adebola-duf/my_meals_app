@@ -8,21 +8,15 @@ class MealItem extends StatelessWidget {
   const MealItem({
     super.key,
     required this.meal,
-    required this.addOrRemoveAMealToFavourites,
-    required this.favouriteMeals,
   });
 
   final Meal meal;
-  final void Function(Meal meal) addOrRemoveAMealToFavourites;
-  final List<Meal> favouriteMeals;
 
   void _goToEachMealScreen(context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => EachMealScreen(
           meal: meal,
-          addOrRemoveAMealToFavourites: addOrRemoveAMealToFavourites,
-          favouriteMeals: favouriteMeals,
         ),
       ),
     );
@@ -44,12 +38,15 @@ class MealItem extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           child: Stack(
             children: [
-              FadeInImage(
-                placeholder: MemoryImage(kTransparentImage),
-                image: NetworkImage(meal.imageUrl),
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Hero(
+                tag: meal.id,
+                child: FadeInImage(
+                  placeholder: MemoryImage(kTransparentImage),
+                  image: NetworkImage(meal.imageUrl),
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               Positioned(
                 left: 0,

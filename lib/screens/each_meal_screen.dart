@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:my_meals_app/models/meal.dart';
+import 'package:my_meals_app/providers/favourite_meals_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EachMealScreen extends StatefulWidget {
+class EachMealScreen extends ConsumerStatefulWidget {
   const EachMealScreen({
     super.key,
     required this.meal,
-    required this.addOrRemoveAMealToFavourites,
-    required this.favouriteMeals,
   });
 
   final Meal meal;
-  final void Function(Meal meal) addOrRemoveAMealToFavourites;
-  final List<Meal> favouriteMeals;
 
   @override
-  State<EachMealScreen> createState() => _EachMealScreenState();
+  ConsumerState<EachMealScreen> createState() => _EachMealScreenState();
 }
 
-class _EachMealScreenState extends State<EachMealScreen> {
-  bool _mealFavouriteStatus = false;
-  @override
-  void initState() {
-    _mealFavouriteStatus = widget.favouriteMeals.contains(widget.meal);
-    super.initState();
-  }
-
+class _EachMealScreenState extends ConsumerState<EachMealScreen> {
   void _changeMealFavouriteStatus() {
-    setState(() {
-      _mealFavouriteStatus = !_mealFavouriteStatus;
-      widget.addOrRemoveAMealToFavourites(widget.meal);
-    });
+    ref
+        .read(favouriteMealsProvider.notifier)
+        .addOrRemoveMealFromFavourites(meal: widget.meal, context: context);
   }
 
   @override
   Widget build(BuildContext context) {
+    bool mealFavouriteStatus =
+        ref.watch(favouriteMealsProvider).contains(widget.meal);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.meal.title),
@@ -42,7 +34,7 @@ class _EachMealScreenState extends State<EachMealScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 13.0),
             child: IconButton(
-              icon: _mealFavouriteStatus
+              icon: mealFavouriteStatus
                   ? const Icon(Icons.star)
                   : const Icon(Icons.star_border_outlined),
               onPressed: _changeMealFavouriteStatus,
@@ -64,12 +56,15 @@ class _EachMealScreenState extends State<EachMealScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 clipBehavior: Clip.hardEdge,
-                child: FadeInImage(
-                  placeholder: MemoryImage(kTransparentImage),
-                  image: NetworkImage(widget.meal.imageUrl),
-                  height: 300,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                child: Hero(
+                  tag: widget.meal.id,
+                  child: FadeInImage(
+                    placeholder: MemoryImage(kTransparentImage),
+                    image: NetworkImage(widget.meal.imageUrl),
+                    height: 300,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(

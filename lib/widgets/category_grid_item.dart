@@ -1,50 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_meals_app/data/dummy_data.dart';
 import 'package:my_meals_app/models/category.dart';
 import 'package:my_meals_app/models/meal.dart';
+import 'package:my_meals_app/providers/filters_provider.dart';
 import 'package:my_meals_app/screens/meals_screen.dart';
 
-class CategoryGridItem extends StatelessWidget {
+class CategoryGridItem extends ConsumerWidget {
   const CategoryGridItem({
     super.key,
     required this.category,
-    required this.addOrRemoveAMealToFavourites,
-    required this.favouriteMeals,
-    required this.filteredMeals,
   });
 
   final Category category;
-  final void Function(Meal meal) addOrRemoveAMealToFavourites;
-  final List<Meal> favouriteMeals;
-  final List<Meal> filteredMeals;
 
-  void onCategorySelected(context) {
+  void onCategorySelected(context, WidgetRef ref) {
+    Map<Filter, bool> userFilters = ref.read(filtersProvider);
+
+    List<Meal> filteredMeals = dummyMeals.where(
+      (meal) {
+        if (userFilters[Filter.isGlutenFree]! && !meal.isGlutenFree) {
+          return false;
+        }
+        if (userFilters[Filter.isLactoseFree]! && !meal.isLactoseFree) {
+          return false;
+        }
+        if (userFilters[Filter.vegan]! && !meal.isVegan) {
+          return false;
+        }
+        if (userFilters[Filter.vegeterian]! && !meal.isVegetarian) {
+          return false;
+        }
+        return true;
+      },
+    ).toList();
+
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => 
-        Scaffold(
-      appBar: AppBar(
-        title: Text(category.title),
-      ),
-      body: MealsScreen(
+        builder: (ctx) => MealsScreen(
           meals: filteredMeals
               .where(
                 (meal) => meal.categories.contains(category.id),
               )
               .toList(),
           categoryTitle: category.title,
-          addOrRemoveAMealToFavourites: addOrRemoveAMealToFavourites,
-          favouriteMeals: favouriteMeals,
         ),
       ),
-    ));
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: () {
-        onCategorySelected(context);
+        onCategorySelected(context, ref);
       },
       child: Container(
         decoration: BoxDecoration(
