@@ -28,7 +28,7 @@ class MyMealsApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: kTheme,
-      home: const TabScreen(),
+      home: const TabScreen(selectedPageIndex: 0,),
     );
   }
 }

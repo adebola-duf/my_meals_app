@@ -7,15 +7,22 @@ import 'package:my_meals_app/widgets/categories_grid.dart';
 import 'package:my_meals_app/widgets/main_drawer.dart';
 
 class TabScreen extends ConsumerStatefulWidget {
-  const TabScreen({super.key});
+    const TabScreen({super.key, required this.selectedPageIndex,});
+// I am putting this here just in case we want to 
+  final int selectedPageIndex;
 
   @override
   ConsumerState<TabScreen> createState() => _TabScreenState();
 }
 
 class _TabScreenState extends ConsumerState<TabScreen> {
-  int _selectedPageIndex = 0;
 
+  late int _selectedPageIndex;
+  @override
+  void initState() {
+ _selectedPageIndex = widget.selectedPageIndex;
+    super.initState();
+  }
   String _activePageTitle = "Categories";
 
   void _changePage(int index) {

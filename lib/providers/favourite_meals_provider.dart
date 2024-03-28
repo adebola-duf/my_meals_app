@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_meals_app/models/meal.dart';
 import 'package:flutter/material.dart';
+import 'package:my_meals_app/screens/tab_screen.dart';
 
 class FavouriteMealsNotifier extends StateNotifier<List<Meal>> {
   FavouriteMealsNotifier() : super([]);
@@ -21,8 +22,11 @@ class FavouriteMealsNotifier extends StateNotifier<List<Meal>> {
             textColor: Colors.white,
             label: "Go To Favourites",
             onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const TabScreen(selectedPageIndex: 1),
+                ),
+              );
               // _changePage(1);
             },
           ),
@@ -40,8 +44,12 @@ class FavouriteMealsNotifier extends StateNotifier<List<Meal>> {
           textColor: Theme.of(context).colorScheme.onBackground,
           label: "Go To Favourites",
           onPressed: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const TabScreen(selectedPageIndex: 1),
+              ),
+            );
+
             // _changePage(1);
           },
         ),
